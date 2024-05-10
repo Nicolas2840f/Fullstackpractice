@@ -1,29 +1,31 @@
-import Course from "./components/Course";
-  
 const App = () => {
   const course = {
-    id: 1,
-    name: "Half Stack application development",
+    name: 'Half Stack application development',
     parts: [
       {
-        name: "Fundamentals of React",
-        exercises: 10,
-        id: 1,
+        name: 'Fundamentals of React',
+        exercises: 10
       },
       {
-        name: "Using props to pass data",
-        exercises: 7,
-        id: 2,
+        name: 'Using props to pass data',
+        exercises: 7
       },
       {
-        name: "State of a component",
-        exercises: 14,
-        id: 3,
-      },
-    ],
-  };
+        name: 'State of a component',
+        exercises: 14
+      }
+    ]
+  }
 
-  return <Course course={course} />;
-};
-
-export default App;
+  const total = course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises 
+  return (
+    <div>
+      <h1>{course.name}</h1>
+      <p>{course.parts[0].name} consta de {course.parts[0].exercises}</p>
+      <p>{course.parts[1].name} consta de {course.parts[1].exercises}</p>
+      <p>{course.parts[2].name} consta de {course.parts[2].exercises}</p>
+      <h2>El total de ejercicios es de: {total}</h2>
+    </div>
+  )
+}
+export default App
