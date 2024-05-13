@@ -33,7 +33,6 @@ const App = () => {
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
-      console.log(initialPersons)
     });
   }, []);
 
