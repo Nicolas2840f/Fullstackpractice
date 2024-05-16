@@ -87,7 +87,7 @@ const App = () => {
           }, 3000);
         })
         .catch((error) => {
-          setErrorMessage(`El nombre no puede ser menor de 5 caracteres`);
+          setErrorMessage(`${error} El nombre no puede ser menor de 5 caracteres`);
         });
     }
   };
@@ -117,7 +117,7 @@ const App = () => {
         }, 3000);
       })
       .catch((error) => {
-        setErrorMessage(`El nombre no puede ser menor de 5 caracteres`);
+        setErrorMessage(`${error} El nombre no puede ser menor de 5 caracteres`);
       });
   };
   return (
