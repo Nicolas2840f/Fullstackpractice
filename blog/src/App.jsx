@@ -1,12 +1,23 @@
 import { useState, useEffect } from "react";
 import blogService from "./services/blogs";
 
-const Blog = ({ blog, changeLike }) => {
-  const [check, setCheck] = useState(blog.check);
+const Blog = ({ blog, updateBlog }) => {
+  const [likes, setLikes] = useState(blog.likes);
 
   const handleCheckboxChange = (e) => {
-    setCheck(e.target.checked);
-    changeLike(e);
+    console.log(e.target.checked);
+    if (e.target.checked == true) {
+      const updatedBlog = {
+        ...blog,
+      };
+      updateBlog(updatedBlog);
+    } else {
+      const updatedBlog = {
+        ...blog,
+        likes: likes - 1,
+      };
+      updateBlog(updatedBlog);
+    }
   };
 
   return (
@@ -14,29 +25,24 @@ const Blog = ({ blog, changeLike }) => {
       <p>{blog.title}</p>
       <p>{blog.author}</p>
       <p>{blog.url}</p>
-      <input
-        type="checkbox"
-        onChange={handleCheckboxChange}
-        checked={check}
-      />
+      <label className="like">
+        <input type="checkbox" onChange={handleCheckboxChange} />
+        <span></span>
+      </label>
       <p>{blog.likes}</p>
     </div>
   );
 };
 
-
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [newTitle, setTitle] = useState("");
-  const [newAutor, setAutor] = useState("");
+  const [newAuthor, setAuthor] = useState("");
   const [newUrl, setUrl] = useState("");
-  const [check, setCheck] = useState(false);
-  const [likes, setLikes] = useState(0);
 
   useEffect(() => {
-    blogService.getAll().then((initialBlogs) =>{
-      console.log(initialBlogs)
-      setBlogs(initialBlogs)
+    blogService.getAll().then((initialBlogs) => {
+      setBlogs(initialBlogs);
     });
   }, []);
 
@@ -45,39 +51,33 @@ const App = () => {
   };
 
   const changeAutor = (e) => {
-    setAutor(e.target.value);
+    setAuthor(e.target.value);
   };
 
   const changeUrl = (e) => {
     setUrl(e.target.value);
   };
 
-  const changeLike = (e) => {
-    if (e.target.checked == true) {
-      setCheck((check) => !check);
-      setLikes((newLike) => newLike + 1);
-      console.log(likes);
-    } else {
-      setCheck((check) => check);
-      console.log(check);
-      setLikes((newLike) => newLike - 1);
-      console.log(likes);
-    }
+  const updateBlog = (updatedBlog) => {
+    blogService.updateBlog(updatedBlog.id, updatedBlog).then((returnedBlog) => {
+      setBlogs(
+        blogs.map((blog) => (blog.id !== returnedBlog.id ? blog : returnedBlog))
+      );
+    });
   };
   const addBlog = (event) => {
     event.preventDefault();
     const blog = {
       title: newTitle,
-      autor: newAutor,
+      author: newAuthor,
       url: newUrl,
-      likes: 0
+      likes: 0,
     };
     blogService.addBlog(blog).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog));
       setTitle("");
-      setAutor("");
+      setAuthor("");
       setUrl("");
-      setCheck(false);
     });
   };
   return (
@@ -86,7 +86,7 @@ const App = () => {
         <h1>Blogs</h1>
         <ul>
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={{...blog,changeLike}} />
+            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
           ))}
         </ul>
       </div>
@@ -106,7 +106,7 @@ const App = () => {
             id="autor"
             type="text"
             className="box"
-            value={newAutor}
+            value={newAuthor}
             onChange={changeAutor}
           />
           <label htmlFor="url">Blog link</label>

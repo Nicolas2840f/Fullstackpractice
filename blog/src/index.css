@@ -9,3 +9,20 @@
     width: 100%;
     margin: 10px 0px ;
 }
+.like input {
+    display: none; /* Oculta el checkbox */
+  }
+  
+  .like span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+    background-image: url('images/126473.png');
+    cursor: pointer;
+  }
+  
+  .like input:checked + span {
+    background-image: url('images/686339.png'); /* Cambia la imagen al estar seleccionado */
+  }
+  

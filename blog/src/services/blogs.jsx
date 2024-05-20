@@ -10,5 +10,9 @@ const addBlog = blog=>{
     const request = axios.post(baseUrl,blog)
     return request.then(response=>response.data)
 }
+const updateBlog = (id,blog)=>{
+    const request = axios.put(`${baseUrl}/${id}`,blog)
+    return request.then(response => response.data)
+}
 
-export default {getAll,addBlog}
+export default {getAll,addBlog,updateBlog}
